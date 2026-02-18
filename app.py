@@ -4,147 +4,134 @@ import pandas as pd
 import plotly.express as px
 from datetime import datetime
 
-# 1. Configurație High-End
-st.set_page_config(page_title="ARBMaster Obsidian", layout="wide", page_icon="⚡")
+# 1. Configurare Sistem
+st.set_page_config(page_title="ArbMaster // Neo-Terminal", layout="wide", page_icon="📟")
 
-# 2. Arhitectura Vizuală (CSS-ul care face diferența)
+# 2. Arhitectura Vizuală (Hyper-Refined CSS)
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Inter:wght@200;400;800&display=swap');
 
-    /* Fundal Cinematic */
+    /* Resetare Fundal */
     .stApp {
-        background: #050505;
-        background-image: 
-            radial-gradient(at 0% 0%, rgba(0, 212, 255, 0.05) 0, transparent 50%), 
-            radial-gradient(at 100% 100%, rgba(0, 255, 136, 0.05) 0, transparent 50%);
+        background-color: #08090a;
+        color: #d1d5db;
+        font-family: 'Inter', sans-serif;
     }
 
-    /* Sidebar futurist */
+    /* Sidebar Ultra-Minimalist */
     [data-testid="stSidebar"] {
-        background-color: #080808 !important;
-        border-right: 1px solid #1a1a1a;
+        background-color: #050607 !important;
+        border-right: 1px solid #1a1c1e;
+        padding-top: 2rem;
     }
 
-    /* Card-uri de tip Obsidian */
-    .arb-card {
-        background: rgba(15, 15, 15, 0.8);
-        border: 1px solid #222;
-        border-radius: 16px;
-        padding: 24px;
-        margin-bottom: 20px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    /* Header Neo-Terminal */
+    .terminal-title {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 800;
+        color: #ffffff;
+        font-size: 2.8rem;
+        letter-spacing: -1px;
+        border-bottom: 2px solid #00ff88;
+        display: inline-block;
+        margin-bottom: 0.5rem;
     }
-    .arb-card:hover {
-        border-color: #00d4ff;
-        transform: translateY(-5px);
-        box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
-    }
-
-    /* Header cu font de tip "Terminal" */
-    .hero-text {
-        font-family: 'Orbitron', sans-serif;
-        font-weight: 700;
-        background: linear-gradient(180deg, #fff 0%, #444 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        font-size: 4rem;
-        text-align: center;
-        letter-spacing: 5px;
+    .terminal-subtitle {
+        font-family: 'JetBrains Mono', monospace;
+        color: #00ff88;
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        margin-bottom: 3rem;
     }
 
-    /* Buton "Action" cu efect de pulse */
+    /* Card-uri de Date (Fine-Line Design) */
+    .data-card {
+        background: #0d0f11;
+        border: 1px solid #1f2226;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        transition: all 0.2s ease-in-out;
+    }
+    .data-card:hover {
+        border-color: #3b82f6;
+        background: #111418;
+    }
+
+    /* Input-uri Stilizate */
+    .stTextInput>div>div>input, .stNumberInput>div>div>input {
+        background-color: #0d0f11 !important;
+        border: 1px solid #1f2226 !important;
+        color: #00ff88 !important;
+        font-family: 'JetBrains Mono', monospace !important;
+    }
+
+    /* Buton "Execute" Style */
     .stButton>button {
-        background: #00d4ff !important;
-        color: #000 !important;
-        font-family: 'Orbitron', sans-serif !important;
+        width: 100%;
+        background-color: #00ff88 !important;
+        color: #000000 !important;
+        font-family: 'JetBrains Mono', monospace !important;
         font-weight: 700 !important;
         border-radius: 4px !important;
         border: none !important;
-        height: 50px !important;
-        width: 100% !important;
-        box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
-        transition: 0.3s !important;
+        padding: 0.75rem !important;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
-    .stButton>button:hover {
-        background: #00ff88 !important;
-        box-shadow: 0 0 25px rgba(0, 255, 136, 0.6);
+    
+    /* Profit Badge */
+    .profit-tag {
+        font-family: 'JetBrains Mono', monospace;
+        background: rgba(0, 255, 136, 0.1);
+        color: #00ff88;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        border: 1px solid #00ff88;
     }
 
-    /* Metricile "Neon" */
-    [data-testid="stMetricValue"] {
-        font-family: 'Orbitron', sans-serif;
-        color: #00ff88 !important;
-        font-size: 1.8rem !important;
-    }
+    /* Ascundere UI Streamlit */
+    header, footer {visibility: hidden;}
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Sidebar - Centrul de Control
+# 3. Sidebar: System Control
 with st.sidebar:
-    st.markdown("<h1 style='color: #fff; font-size: 1.2rem;'>SYSTEM CONFIG</h1>", unsafe_allow_html=True)
-    api_key = st.text_input("ACCESS TOKEN", type="password")
+    st.markdown("<p style='font-family: \"JetBrains Mono\"; color: #4b5563;'># SYS_CONTROL</p>", unsafe_allow_html=True)
+    api_key = st.text_input(">> ACCESS_KEY", type="password")
+    buget = st.number_input(">> TOTAL_CAPITAL (RON)", value=2000, step=500)
+    round_on = st.toggle(">> ANTI_DETECT_MODE", value=True)
     st.divider()
-    market_filter = st.multiselect("EXCHANGES", ["Unibet", "Betfair", "Betano", "Pinnacle", "Bwin"], default=["Unibet", "Betfair"])
-    capital = st.number_input("TOTAL CAPITAL (RON)", value=2000)
-    st.divider()
-    st.caption("v4.0 Obsidian Edition • Secure Connection")
+    st.markdown("<p style='font-family: \"JetBrains Mono\"; color: #4b5563;'>/ STATUS: ONLINE</p>", unsafe_allow_html=True)
 
-# 4. Main Layout
-st.markdown("<h1 class='hero-text'>ARBMASTER</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #666; font-family: Inter;'>QUANTITATIVE ARBITRAGE TERMINAL</p>", unsafe_allow_html=True)
+# 4. Main Terminal Interface
+st.markdown("<h1 class='terminal-title'>ARBMaster // NEO-TERMINAL</h1>", unsafe_allow_html=True)
+st.markdown("<p class='terminal-subtitle'>REAL-TIME PROBABILISTIC ARBITRAGE TERMINAL</p>", unsafe_allow_html=True)
+
+# Grid Statistici
+col1, col2, col3, col4 = st.columns(4)
+with col1: st.metric("Uptime", "99.9%", "LIVE", delta_color="normal")
+with col2: st.metric("Active_Nodes", "14/14", "SYNC")
+with col3: st.metric("Avg_Spread", "2.84%", "+0.2")
+with col4: st.metric("Session_PnL", "0.00 RON", "0.0%")
+
 st.markdown("<br>", unsafe_allow_html=True)
 
-# Indicatori de Stare (Top Grid)
-m1, m2, m3, m4 = st.columns(4)
-with m1: st.metric("STATUS", "SYNCED", delta="4ms")
-with m2: st.metric("OPPORTUNITIES", "12 Active")
-with m3: st.metric("AVG PROFIT", "3.12%")
-with m4: st.metric("SESSION PnL", "420.50 RON")
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# 5. Logică & Feed-ul de Date
-if st.button("INITIALIZE GLOBAL SCAN"):
+# 5. Motorul de Scanare & Afișare
+if st.button("RUN SCAN_PROTOCOL"):
     if not api_key:
-        st.error("❗ ACCESS DENIED: API TOKEN REQUIRED")
+        st.error("!! ERROR: UNAUTHORIZED_ACCESS. API_KEY_REQUIRED.")
     else:
-        with st.spinner("DECODING ODDS..."):
-            # Exemplu de card pentru rezultat (Repetabil prin loop-ul de API)
-            st.markdown("""
-            <div class="arb-card">
-                <div style="display: flex; justify-content: space-between; align-items: center;">
-                    <span style="color: #666; font-family: Inter;">🏆 CHAMPIONS LEAGUE</span>
-                    <span style="color: #00ff88; font-family: Orbitron; font-weight: bold;">+4.25%</span>
-                </div>
-                <h2 style="margin: 15px 0; font-family: Orbitron; font-weight: 400;">REAL MADRID <span style="color: #00d4ff;">vs</span> MAN CITY</h2>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid #222;">
-                        <div style="font-size: 0.8rem; color: #888;">BETFAIR</div>
-                        <div style="font-size: 1.5rem; color: #fff;">Cota 2.45</div>
-                        <div style="color: #00d4ff; font-weight: bold;">Miză: 940 RON</div>
-                    </div>
-                    <div style="background: rgba(255,255,255,0.02); padding: 15px; border-radius: 8px; border: 1px solid #222;">
-                        <div style="font-size: 0.8rem; color: #888;">UNIBET</div>
-                        <div style="font-size: 1.5rem; color: #fff;">Cota 2.38</div>
-                        <div style="color: #00d4ff; font-weight: bold;">Miză: 1060 RON</div>
-                    </div>
-                </div>
-            </div>
-            """, unsafe_allow_html=True)
-
-# 6. Analiza Grafică (Plotly Custom)
-st.markdown("<br>", unsafe_allow_html=True)
-st.subheader("📡 SPREAD ANALYSIS")
-# Simulăm un set de date pentru grafic
-chart_data = pd.DataFrame({'Time': range(10), 'Profit': [2, 5, 4, 8, 7, 12, 10, 15, 14, 20]})
-fig = px.area(chart_data, x='Time', y='Profit', template='plotly_dark')
-fig.update_traces(line_color='#00d4ff', fillcolor='rgba(0, 212, 255, 0.1)')
-fig.update_layout(
-    paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)',
-    xaxis={'showgrid': False},
-    yaxis={'showgrid': False}
-)
-st.plotly_chart(fig, use_container_width=True)
+        with st.spinner("// INITIALIZING_DATA_STREAM..."):
+            try:
+                # Interogăm API (Căutăm fotbal pentru 1X2)
+                url = f"https://api.the-odds-api.com/v4/sports/soccer/odds/?apiKey={api_key}&regions=eu&markets=h2h"
+                data = requests.get(url).json()
+                
+                found = 0
+                for game in data:
+                    home, away = game['home_team'], game['away_team']
+                    b1, bX, b2 = {'p': 0, 'b': ''}, {'p': 0, 'b': ''},
