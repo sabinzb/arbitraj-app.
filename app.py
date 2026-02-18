@@ -12,78 +12,34 @@ st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;700;900&display=swap');
 
-    /* Fundal Cinematic Deep Black */
-    .stApp {
-        background-color: #050505;
-        color: #e0e0e0;
-        font-family: 'Inter', sans-serif;
-    }
-
-    /* Sidebar Obsidian Style */
-    [data-testid="stSidebar"] {
-        background-color: #080808 !important;
-        border-right: 1px solid #1a1a1a;
-    }
-
-    /* Header Neo-Terminal */
+    .stApp { background-color: #050505; color: #e0e0e0; font-family: 'Inter', sans-serif; }
+    [data-testid="stSidebar"] { background-color: #080808 !important; border-right: 1px solid #1a1a1a; }
+    
     .terminal-header {
-        font-family: 'JetBrains Mono', monospace;
-        font-weight: 900;
-        color: #ffffff;
-        font-size: 3.2rem;
-        letter-spacing: -2px;
+        font-family: 'JetBrains Mono', monospace; font-weight: 900; color: #ffffff;
+        font-size: 3.2rem; letter-spacing: -2px;
         background: linear-gradient(90deg, #fff, #00ff88);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         margin-bottom: 0.2rem;
     }
 
-    /* Card-uri de Arbitraj Rafinate */
     .arb-card {
-        background: #0d0d0d;
-        border: 1px solid #1f1f1f;
-        border-radius: 12px;
-        padding: 2rem;
-        margin-bottom: 1.5rem;
+        background: #0d0d0d; border: 1px solid #1f1f1f;
+        border-radius: 12px; padding: 2rem; margin-bottom: 1.5rem;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .arb-card:hover {
-        border-color: #00ff88;
-        background: #111111;
-        box-shadow: 0 10px 30px rgba(0, 255, 136, 0.05);
-    }
+    .arb-card:hover { border-color: #00ff88; background: #111111; }
 
-    /* Badge Profit High-Viz */
     .profit-tag {
-        font-family: 'JetBrains Mono', monospace;
-        background: rgba(0, 255, 136, 0.1);
-        color: #00ff88;
-        padding: 6px 14px;
-        border-radius: 6px;
-        font-size: 0.9rem;
-        font-weight: 700;
-        border: 1px solid rgba(0, 255, 136, 0.3);
+        font-family: 'JetBrains Mono', monospace; background: rgba(0, 255, 136, 0.1);
+        color: #00ff88; padding: 6px 14px; border-radius: 6px;
+        font-size: 0.9rem; font-weight: 700; border: 1px solid rgba(0, 255, 136, 0.3);
     }
 
-    /* Buton Cyber-Green */
     .stButton>button {
-        width: 100%;
-        background: #00ff88 !important;
-        color: #000 !important;
-        font-family: 'JetBrains Mono', monospace !important;
-        font-weight: 900 !important;
-        border-radius: 4px !important;
-        border: none !important;
-        padding: 1rem !important;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-    }
-
-    /* Metricile Terminalului */
-    div[data-testid="stMetricValue"] {
-        font-family: 'JetBrains Mono', monospace;
-        color: #00ff88 !important;
-        font-size: 1.8rem !important;
+        width: 100%; background: #00ff88 !important; color: #000 !important;
+        font-family: 'JetBrains Mono', monospace !important; font-weight: 900 !important;
+        border-radius: 4px !important; border: none !important; padding: 1rem !important;
     }
 
     header, footer {visibility: hidden;}
@@ -98,7 +54,6 @@ with st.sidebar:
     sport_choice = st.selectbox("TARGET_MARKET", ["soccer", "tennis", "basketball"])
     st.divider()
     anti_detect = st.toggle("ANTI_DETECTION (ROUND_STAKES)", value=True)
-    st.caption("v4.0 Platinum Edition // Matrix Logic")
 
 # 4. Header Interfață
 st.markdown("<h1 class='terminal-header'>ARBMaster // PLATINUM</h1>", unsafe_allow_html=True)
@@ -118,7 +73,7 @@ with m4: st.metric("Market_Speed", "125ms")
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 5. Logica de Scanare & Calcul 1X2 / H2H
+# 5. Logica de Scanare
 if st.button("RUN SCAN_PROTOCOL"):
     if not api_key:
         st.error("!! ACCESS_DENIED: API_KEY_REQUIRED")
@@ -129,7 +84,7 @@ if st.button("RUN SCAN_PROTOCOL"):
                 response = requests.get(url)
                 
                 if response.status_code != 200:
-                    st.error(f"API Error {response.status_code}: {response.text}")
+                    st.error(f"API Error: {response.status_code}")
                 else:
                     data = response.json()
                     found = 0
@@ -138,7 +93,6 @@ if st.button("RUN SCAN_PROTOCOL"):
                         home, away = game['home_team'], game['away_team']
                         b1, bX, b2 = {'p': 0, 'b': ''}, {'p': 0, 'b': ''}, {'p': 0, 'b': ''}
                         
-                        # Extragem cele mai bune cote pentru 1, X, 2
                         for bk in game.get('bookmakers', []):
                             for mkt in bk.get('markets', []):
                                 if mkt['key'] == 'h2h':
@@ -148,15 +102,12 @@ if st.button("RUN SCAN_PROTOCOL"):
                                         elif n == away and p > b2['p']: b2 = {'p': p, 'b': bk['title']}
                                         elif n == 'Draw' and p > bX['p']: bX = {'p': p, 'b': bk['title']}
 
-                        # Verificăm dacă este un meci 1X2 (Fotbal) sau H2H (Tenis/Basket)
                         has_draw = bX['p'] > 0
                         inv_sum = (1/b1['p'] + 1/b2['p'] + (1/bX['p'] if has_draw else 0)) if (b1['p'] > 0 and b2['p'] > 0) else 1.1
 
                         if inv_sum < 1.0:
                             found += 1
                             prof_pct = (1 - inv_sum) * 100
-                            
-                            # Calcul mize
                             m1 = ((1/b1['p'])/inv_sum) * buget
                             m2 = ((1/b2['p'])/inv_sum) * buget
                             mX = ((1/bX['p'])/inv_sum) * buget if has_draw else 0
@@ -166,7 +117,7 @@ if st.button("RUN SCAN_PROTOCOL"):
                             
                             current_profit = (m1 * b1['p']) - (m1 + m2 + mX)
 
-                            # Card de Arbitraj Rafinat
+                            # CARD REFINAT - Parametrul unsafe_allow_html=True este CRUCIAL aici
                             st.markdown(f"""
                             <div class="arb-card">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
@@ -195,18 +146,14 @@ if st.button("RUN SCAN_PROTOCOL"):
                                 st.rerun()
 
                     if found == 0:
-                        st.warning("// SCAN_COMPLETE: NO_ARBITRAGE_FOUND_IN_CURRENT_FEED")
-                    else:
-                        st.balloons()
+                        st.warning("// SCAN_COMPLETE: NO_ARBITRAGE_FOUND")
             except Exception as e:
                 st.error(f"// SYSTEM_EXCEPTION: {str(e)}")
 
 # 6. Dashboard Analitic
 if st.session_state.history:
     st.divider()
-    st.subheader("📈 Profit_Stream_Analysis")
     df = pd.DataFrame(st.session_state.history)
     fig = px.area(df, x="T", y="P", template="plotly_dark")
     fig.update_traces(line_color='#00ff88', fillcolor='rgba(0, 255, 136, 0.1)')
-    fig.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', margin=dict(l=0, r=0, t=0, b=0))
     st.plotly_chart(fig, use_container_width=True)
